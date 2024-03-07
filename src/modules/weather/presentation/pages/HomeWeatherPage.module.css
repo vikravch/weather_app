@@ -1,0 +1,7 @@
+.home_page_title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    font-size: 24px;
+}
