@@ -1,4 +1,4 @@
-import Weather from "../entities/Weather";
+import Weather from "../domain/entities/Weather";
 
 const baseUrl = "https://api.openweathermap.org/data/2.5";
 const apiKey = "43eca9eb36bec7368e155809e9f64c2c";
