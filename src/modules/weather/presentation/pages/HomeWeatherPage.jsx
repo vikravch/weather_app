@@ -1,10 +1,11 @@
-import React, {Component, useContext, useState} from 'react';
+import React, {Component, useContext, useEffect, useState} from 'react';
 import Weather from "../../domain/entities/Weather";
 import BackIcon from "../components/icons/BackIcon";
 import style from "./HomeWeatherPage.module.css"
 import LikeIcon from "../components/icons/LikeIcon";
 import {AppContext} from "../../../../general/context/appContext";
 import {getWeatherUseCase} from "../../domain/useCases";
+import {useParams} from "react-router-dom";
 
 function HomeWeatherPage(props) {
     const {saveCityToPrefs} = useContext(AppContext);
@@ -12,6 +13,18 @@ function HomeWeatherPage(props) {
         useState(new Weather().object);
     const [cityName, setCityName] =
         useState('')
+
+    const {city} = useParams();
+    console.log("City - "+city);
+
+    useEffect(() => {
+        if (city){ // false, '', undefined, 0
+            getWeatherUseCase(city)
+                .then((data)=>{
+                    setWeather(data)
+                });
+        }
+    }, [city]);
 
     const pageJSX = (weather.city === '') ? <>
             <input onChange={(event)=>{

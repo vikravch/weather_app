@@ -1,31 +1,20 @@
-import React, {Component} from 'react';
+import React from 'react';
 import style from './NavigationToolbar.module.css';
-import {AppContext} from "../context/appContext";
+import {Link} from "react-router-dom";
 
-class NavigationToolbar extends Component {
-    render() {
-        return (
-            <AppContext.Consumer >{
-                (value) => {
-                    return (
-                        <ul className={style.nav_list}>
-                            {this.props.paths.map((path, index) => {
-                                return (
-                                    <li key={index} className={style.nav_item}
-                                        onClick={() =>
-                                            value.onNavigate(path)}>
-                                        {path}
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    )
-                }
-            }
+function NavigationToolbar(props) {
+    return (
+        <ul className={style.nav_list}>
+            {props.paths.map((path, index) => {
+                return (
+                    <li key={index} className={style.nav_item}>
+                        <Link to={path.path}>{path.title}</Link>
+                    </li>
+                );
+            })}
+        </ul>
 
-            </AppContext.Consumer>
-        );
-    }
+
+    );
 }
-
 export default NavigationToolbar;

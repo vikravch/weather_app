@@ -1,29 +1,20 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import NavigationToolbar from "../../../../general/components/NavigationToolbar";
 import HomeWeatherPage from "./HomeWeatherPage";
 import UserListWeatherPage from "./UserListWeatherPage";
-import {AppContext} from "../../../../general/context/appContext";
+import {Route, Switch} from "react-router-dom";
 
-function Main(props) {
-    let Page = null;
-    const {currentPage} = useContext(AppContext);
-    switch (currentPage) {
-        case 'Home':
-            Page = <HomeWeatherPage />;
-            break;
-        case 'User List':
-            Page = <UserListWeatherPage />;
-            break;
-        default:
-            Page = <HomeWeatherPage />;
-            break;
-    }
+function Main() {
     return (
         <div className="App">
             <NavigationToolbar
-                paths={['Home', 'User List']}
+                paths={[{title: 'Home', path: '/home'},
+                    {title: 'User List', path: '/cities'}]}
             />
-            {Page}
+            <Switch>
+                <Route component={HomeWeatherPage} path={['/', '/home', '/home/:city']} exact/>
+                <Route component={UserListWeatherPage} path={'/cities'}/>
+            </Switch>
         </div>
     );
 }
