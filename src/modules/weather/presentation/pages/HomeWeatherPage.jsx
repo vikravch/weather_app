@@ -6,9 +6,11 @@ import LikeIcon from "../components/icons/LikeIcon";
 import {AppContext} from "../../../../general/context/appContext";
 import {getWeatherUseCase} from "../../domain/useCases";
 import {useParams} from "react-router-dom";
+import storage from "../../../../general/redux/storeConfiguration";
+import {saveCityToPrefs} from "../redux/weatherActions";
 
 function HomeWeatherPage(props) {
-    const {saveCityToPrefs} = useContext(AppContext);
+    //const {saveCityToPrefs} = useContext(AppContext);
     const [weather, setWeather] =
         useState(new Weather().object);
     const [cityName, setCityName] =
@@ -45,7 +47,7 @@ function HomeWeatherPage(props) {
                 }}/>
                 <span>City: {weather.city}</span>
                 <LikeIcon size="24" isLiked={true} onClick={() => {
-                    saveCityToPrefs(cityName);
+                    storage.dispatch(saveCityToPrefs(cityName));
                 }}/>
             </div>
             <h3>Temperature: {weather.temperature}</h3>
