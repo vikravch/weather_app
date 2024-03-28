@@ -1,8 +1,10 @@
-import {createStore} from "./createStore";
+
 import weatherReducer from "../../modules/weather/presentation/redux/weatherReducer";
+import {createStore} from "redux";
 
 const initState = { prefsCities:[] }
-const storage = createStore(initState,
-    weatherReducer);
+const storage = createStore(
+    weatherReducer,initState
+    );
 
 export default storage;

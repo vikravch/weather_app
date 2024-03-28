@@ -1,4 +1,4 @@
-import React, {Component, useContext, useEffect, useState} from 'react';
+import React, {Component, useCallback, useContext, useEffect, useState} from 'react';
 import Weather from "../../domain/entities/Weather";
 import BackIcon from "../components/icons/BackIcon";
 import style from "./HomeWeatherPage.module.css"
@@ -6,10 +6,15 @@ import LikeIcon from "../components/icons/LikeIcon";
 import {AppContext} from "../../../../general/context/appContext";
 import {getWeatherUseCase} from "../../domain/useCases";
 import {useParams} from "react-router-dom";
-import storage from "../../../../general/redux/storeConfiguration";
 import {saveCityToPrefs} from "../redux/weatherActions";
+import {useDispatch, useSelector} from "react-redux";
 
 function HomeWeatherPage(props) {
+
+    const dispatch = useDispatch();
+    const prefsCities = useSelector(
+        (state) => state.prefsCities
+    )
     //const {saveCityToPrefs} = useContext(AppContext);
     const [weather, setWeather] =
         useState(new Weather().object);
@@ -17,7 +22,7 @@ function HomeWeatherPage(props) {
         useState('')
 
     const {city} = useParams();
-    console.log("City - "+city);
+    console.log("City list - "+prefsCities);
 
     useEffect(() => {
         if (city){ // false, '', undefined, 0
@@ -27,6 +32,11 @@ function HomeWeatherPage(props) {
                 });
         }
     }, [city]);
+
+    const checkCity = (city) => {
+        console.log("city name "+city);
+        return prefsCities.includes(city);
+    }
 
     const pageJSX = (weather.city === '') ? <>
             <input onChange={(event)=>{
@@ -46,8 +56,10 @@ function HomeWeatherPage(props) {
                     setCityName('');
                 }}/>
                 <span>City: {weather.city}</span>
-                <LikeIcon size="24" isLiked={true} onClick={() => {
-                    storage.dispatch(saveCityToPrefs(cityName));
+                <LikeIcon size="24" isLiked={
+                    checkCity(weather.city)
+                } onClick={() => {
+                    dispatch(saveCityToPrefs(cityName));
                 }}/>
             </div>
             <h3>Temperature: {weather.temperature}</h3>
